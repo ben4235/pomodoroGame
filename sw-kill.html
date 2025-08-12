@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Kill SW</title>
+<body style="font:16px -apple-system,system-ui;background:#0f1220;color:#fff;padding:16px">
+<h3>Service Worker Reset</h3>
+<p>If this page auto-refreshes, your old SW was unregistered.</p>
+<script>
+(async () => {
+  try {
+    // Unregister ALL service workers for this scope
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+    // Delete caches
+    if (window.caches && caches.keys) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+  } catch(e) { /* ignore */ }
+  // Give Safari a moment, then bounce to home with a cache-buster
+  setTimeout(() => location.href = './?v=' + Date.now(), 600);
+})();
+</script>
+</body>
