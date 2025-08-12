@@ -1,9 +1,9 @@
-const CACHE = 'focus-forge-v4';
+const CACHE = 'focus-forge-v6';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
-  './game_v4.js',
+  './game_v6.js',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
