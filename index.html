@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- your existing UI -->
   <header>
     <div class="header-wrap">
       <div style="display:flex;gap:10px;align-items:center">
@@ -22,29 +23,23 @@
   </header>
 
   <main>
-    <!-- TIMER / GAME -->
     <section id="timerCard" class="card">
       <div id="world"></div>
-
       <div id="time" class="big">25:00</div>
-
       <div class="kv">
         <div><div class="small">Points</div><div id="points" style="font-weight:900;font-size:20px">0</div></div>
         <div><div class="small">Rate</div><div id="rate" style="font-weight:900;font-size:20px">0/s</div></div>
         <div><div class="small">Streak</div><div id="streak" style="font-weight:900;font-size:20px">0</div></div>
       </div>
-
       <div class="controls">
         <button id="startBtn" class="btn-primary" type="button">Start</button>
         <button id="pauseBtn" class="btn" type="button">Pause</button>
         <button id="resetBtn" class="btn-danger" type="button">Reset</button>
       </div>
-
       <div style="margin-top:10px">
         <progress id="phaseProg" max="1" value="0"></progress>
         <div id="phaseLabel" class="small">Focus phase • Ends at --:--</div>
       </div>
-
       <div class="kv small" style="margin-top:8px">
         <div>Focus <input id="focusLen" type="number" min="1" value="25" /></div>
         <div>Break <input id="breakLen" type="number" min="1" value="5" /></div>
@@ -53,7 +48,6 @@
       </div>
     </section>
 
-    <!-- WORKSHOP (placeholder UI; logic is in JS) -->
     <section id="shopCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Workshop</h3>
       <div class="small">Spend currencies during breaks.</div>
@@ -61,7 +55,6 @@
       <div id="shopNotice" class="small" style="text-align:center;margin-top:6px"></div>
     </section>
 
-    <!-- PRESTIGE (placeholder UI) -->
     <section id="prestigeCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Prestige → Grit</h3>
       <div class="small">Convert late‑game resources into permanent boosts.</div>
@@ -72,24 +65,16 @@
       <div id="prestigeInfo" class="small" style="margin-top:8px;color:#ffe083"></div>
     </section>
 
-    <!-- SETTINGS -->
     <section id="settingsCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Settings</h3>
       <div class="kv small">
-        <div>
-          <label style="display:flex;align-items:center;gap:8px">
-            <input id="setChime" type="checkbox" checked />
-            Focus‑end chime
-          </label>
-        </div>
-        <div>
-          <label style="display:flex;align-items:center;gap:8px">
-            <input id="setShopBreakOnly" type="checkbox" checked />
-            Upgrades only during Breaks
-          </label>
-        </div>
+        <div><label style="display:flex;align-items:center;gap:8px">
+          <input id="setChime" type="checkbox" checked /> Focus‑end chime
+        </label></div>
+        <div><label style="display:flex;align-items:center;gap:8px">
+          <input id="setShopBreakOnly" type="checkbox" checked /> Upgrades only during Breaks
+        </label></div>
       </div>
-
       <div class="controls" style="margin-top:10px">
         <button id="resetSave" class="btn-danger" type="button">Reset Progress</button>
       </div>
@@ -104,11 +89,15 @@
     <button id="tabSettings" type="button">Settings</button>
   </div>
 
-  <!-- Important: version param busts caches -->
-  <script src="game_v10.js?v=12"></script>
+  <!-- Your existing main JS (don’t change filename if you don’t want) -->
+  <script src="game_v10.js?v=12" defer></script>
+  <!-- NEW tiny probe that also (re)binds tabs in case main JS didn’t -->
+  <script src="boot_v13.js?v=13" defer></script>
+
   <script>
+    // Register a NEW service worker filename so the old one can’t interfere
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw-v13.js'));
     }
   </script>
 </body>
