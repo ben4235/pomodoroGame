@@ -3,7 +3,7 @@ const ASSETS = [
   './',
   './index.html',
   './style.css',
-  './game_v10.js?v=10',
+  './game_v10.js?v=11',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
