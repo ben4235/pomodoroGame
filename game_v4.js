@@ -29,7 +29,9 @@ const E = {
   tabTimer: $('#tabTimer'), tabShop: $('#tabShop'), tabPrestige: $('#tabPrestige'),
   cardTimer: $('#timerCard'), cardShop: $('#shopCard'), cardPrestige: $('#prestigeCard'),
   start: $('#startBtn'), pause: $('#pauseBtn'), reset: $('#resetBtn'),
-  prev: $('#calcPrestige'), doPrest: $('#doPrest'), prestigeInfo: $('#prestigeInfo')
+  prev: $('#calcPrestige'), 
+  const dp = document.getElementById('doPrest');
+if (dp) dp.addEventListener('click', prestige);
 };
 
 // ----- tabs (if present) -----
