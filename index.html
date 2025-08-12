@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f1220" />
   <link rel="icon" href="icons/icon-192.png" />
@@ -27,13 +24,10 @@
   <main>
     <!-- TIMER / GAME CARD -->
     <section id="timerCard" class="card">
-      <!-- Game world (canvas is injected here) -->
       <div id="world"></div>
 
-      <!-- Big timer -->
       <div id="time" class="big">25:00</div>
 
-      <!-- Stats row -->
       <div class="kv">
         <div>
           <div class="small">Points</div>
@@ -49,34 +43,26 @@
         </div>
       </div>
 
-      <!-- Controls -->
       <div class="controls">
         <button id="startBtn" class="btn-primary" type="button">Start</button>
         <button id="pauseBtn" class="btn" type="button">Pause</button>
         <button id="resetBtn" class="btn-danger" type="button">Reset</button>
       </div>
 
-      <!-- Progress + phase label -->
       <div style="margin-top:10px">
         <progress id="phaseProg" max="1" value="0"></progress>
         <div id="phaseLabel" class="small">Focus phase • Ends at --:--</div>
       </div>
 
-      <!-- Session lengths -->
       <div class="kv small" style="margin-top:8px">
         <div>Focus <input id="focusLen" type="number" min="1" value="25" /></div>
         <div>Break <input id="breakLen" type="number" min="1" value="5" /></div>
         <div>Long <input id="longLen" type="number" min="1" value="15" /></div>
         <div>Rounds <input id="roundsLen" type="number" min="1" value="4" /></div>
       </div>
-
-      <!-- Save reset (clears progress) -->
-      <div class="controls" style="margin-top:8px">
-        <button id="resetSave" class="btn" type="button">Reset Progress</button>
-      </div>
     </section>
 
-    <!-- Optional sections kept for future use -->
+    <!-- WORKSHOP (kept for future UI lists) -->
     <section id="shopCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Workshop</h3>
       <div class="small">Spend currencies during breaks.</div>
@@ -84,6 +70,7 @@
       <div id="shopNotice" class="small" style="text-align:center;margin-top:6px"></div>
     </section>
 
+    <!-- PRESTIGE (placeholder for future) -->
     <section id="prestigeCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Prestige → Grit</h3>
       <div class="small">Convert late‑game resources into permanent boosts.</div>
@@ -93,16 +80,44 @@
       </div>
       <div id="prestigeInfo" class="small" style="margin-top:8px;color:#ffe083"></div>
     </section>
+
+    <!-- SETTINGS -->
+    <section id="settingsCard" class="card" style="display:none">
+      <h3 style="margin:0 0 8px 0">Settings</h3>
+
+      <div class="kv small">
+        <div>
+          <label style="display:flex;align-items:center;gap:8px">
+            <input id="setChime" type="checkbox" checked />
+            Focus‑end chime
+          </label>
+        </div>
+        <div>
+          <label style="display:flex;align-items:center;gap:8px">
+            <input id="setShopBreakOnly" type="checkbox" checked />
+            Upgrades only during Breaks
+          </label>
+        </div>
+      </div>
+
+      <div class="controls" style="margin-top:10px">
+        <button id="resetSave" class="btn-danger" type="button">Reset Progress</button>
+      </div>
+
+      <div class="small" style="margin-top:8px;color:#9aa0b7">
+        Reset clears your local save instantly. (No confirmation.)
+      </div>
+    </section>
   </main>
 
   <div class="tabbar">
     <button id="tabTimer" class="active" type="button">Timer</button>
     <button id="tabShop" type="button">Workshop</button>
     <button id="tabPrestige" type="button">Prestige</button>
+    <button id="tabSettings" type="button">Settings</button>
   </div>
 
-  <!-- Scripts -->
-  <script src="game_v9.js?v=9"></script>
+  <script src="game_v10.js?v=10"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () =>
