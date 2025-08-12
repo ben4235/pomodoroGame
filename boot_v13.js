@@ -1,56 +1,62 @@
-// Debug banner + safe tab binding so we can see JS is alive
-(function(){
-  function banner(msg, bg){
-    const b=document.createElement('div');
-    b.textContent=msg;
-    b.style.cssText=`position:fixed;left:8px;right:8px;bottom:8px;
-      background:${bg||'#262b48'};color:#fff;padding:8px 10px;border-radius:10px;
-      font:12px -apple-system,system-ui;z-index:9999;opacity:.95`;
-    document.body.appendChild(b); setTimeout(()=>b.remove(),1800);
+// boot_v13.js  — tiny bootstrap & reset wiring
+
+(function () {
+  const $ = (s) => document.querySelector(s);
+
+  // --- tab wiring (safe even if main game binds later) ---
+  function show(id) {
+    const cards = ["timerCard", "shopCard", "prestigeCard", "settingsCard"];
+    const tabs  = ["tabTimer", "tabShop", "tabPrestige", "tabSettings"];
+    cards.forEach(c => { const el = $("#" + c); if (el) el.style.display = (c === id ? "" : "none"); });
+    tabs.forEach(t => { const el = $("#" + t); if (el) el.classList.toggle("active", ("tab" + id.replace("Card","")) === t); });
   }
-  window.addEventListener('error', e=>banner('JS error: '+(e.message||e), '#ff3b30'));
-
-  document.addEventListener('DOMContentLoaded', ()=>{
-    banner('Boot v13 loaded');
-
-    const cards = {
-      timer: document.getElementById('timerCard'),
-      shop: document.getElementById('shopCard'),
-      prest: document.getElementById('prestigeCard'),
-      set: document.getElementById('settingsCard'),
-    };
-    const tabs = {
-      timer: document.getElementById('tabTimer'),
-      shop: document.getElementById('tabShop'),
-      prest: document.getElementById('tabPrestige'),
-      set: document.getElementById('tabSettings'),
-    };
-
-    function show(which){
-      if(!cards.timer) return;
-      Object.values(cards).forEach(c=> c && (c.style.display='none'));
-      Object.values(tabs).forEach(t=> t && t.classList && t.classList.remove('active'));
-      const map={timer:'timer',shop:'shop',prest:'prest',set:'set'};
-      const key=map[which];
-      cards[key] && (cards[key].style.display='block');
-      tabs[key] && tabs[key].classList.add('active');
-    }
-
-    // If main game JS already bound these, adding another listener is OK.
-    tabs.timer && tabs.timer.addEventListener('click', ()=>show('timer'));
-    tabs.shop && tabs.shop.addEventListener('click',  ()=>show('shop'));
-    tabs.prest && tabs.prest.addEventListener('click', ()=>show('prest'));
-    tabs.set  && tabs.set.addEventListener('click',   ()=>show('set'));
-
-    // start/pause/reset probes — won’t interfere with real handlers
-    const s=document.getElementById('startBtn');
-    const p=document.getElementById('pauseBtn');
-    const r=document.getElementById('resetBtn');
-    s && s.addEventListener('click', ()=>banner('start clicked'));
-    p && p.addEventListener('click', ()=>banner('pause clicked'));
-    r && r.addEventListener('click', ()=>banner('reset clicked'));
-
-    // default view
-    show('timer');
+  const tabMap = {
+    tabTimer:    "timerCard",
+    tabShop:     "shopCard",
+    tabPrestige: "prestigeCard",
+    tabSettings: "settingsCard",
+  };
+  Object.keys(tabMap).forEach(tid => {
+    const b = $("#" + tid);
+    if (b) b.addEventListener("click", () => show(tabMap[tid]));
   });
+
+  // default view
+  if ($("#timerCard")) show("timerCard");
+
+  // --- hard reset handler (no confirm, per your request) ---
+  async function hardReset() {
+    // 1) Kill IndexedDB save
+    try { indexedDB.deleteDatabase("ff_save_db"); } catch {}
+
+    // 2) Clear localStorage keys we used
+    try {
+      // If you store specific keys, remove them explicitly; fallback to clear:
+      Object.keys(localStorage)
+        .filter(k => k.startsWith("ff_") || k.includes("focus-forge"))
+        .forEach(k => localStorage.removeItem(k));
+    } catch {}
+
+    // 3) Clear service‑worker caches for this app
+    try {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter(k => k.toLowerCase().includes("focus-forge") || k.toLowerCase().includes("ff_"))
+          .map(k => caches.delete(k))
+      );
+    } catch {}
+
+    // 4) Small delay to let deletions settle, then force a fresh load
+    setTimeout(() => {
+      // Avoid bfcache: replace() tends to fetch fresh
+      location.replace(location.href.split("#")[0]);
+    }, 150);
+  }
+
+  const resetBtn = $("#resetSave");
+  if (resetBtn) resetBtn.addEventListener("click", hardReset);
+
+  // Expose for debugging if needed
+  window.__ffHardReset = hardReset;
 })();
