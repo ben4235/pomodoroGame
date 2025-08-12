@@ -24,36 +24,33 @@
   <main>
     <!-- TIMER / GAME CARD -->
     <section id="timerCard" class="card">
+      <!-- Game world (canvas is injected here) -->
       <div id="world"></div>
 
+      <!-- Big timer -->
       <div id="time" class="big">25:00</div>
 
+      <!-- Stats row -->
       <div class="kv">
-        <div>
-          <div class="small">Points</div>
-          <div id="points" style="font-weight:900;font-size:20px">0</div>
-        </div>
-        <div>
-          <div class="small">Rate</div>
-          <div id="rate" style="font-weight:900;font-size:20px">0/s</div>
-        </div>
-        <div>
-          <div class="small">Streak</div>
-          <div id="streak" style="font-weight:900;font-size:20px">0</div>
-        </div>
+        <div><div class="small">Points</div><div id="points" style="font-weight:900;font-size:20px">0</div></div>
+        <div><div class="small">Rate</div><div id="rate" style="font-weight:900;font-size:20px">0/s</div></div>
+        <div><div class="small">Streak</div><div id="streak" style="font-weight:900;font-size:20px">0</div></div>
       </div>
 
+      <!-- Controls -->
       <div class="controls">
         <button id="startBtn" class="btn-primary" type="button">Start</button>
         <button id="pauseBtn" class="btn" type="button">Pause</button>
         <button id="resetBtn" class="btn-danger" type="button">Reset</button>
       </div>
 
+      <!-- Progress + phase label -->
       <div style="margin-top:10px">
         <progress id="phaseProg" max="1" value="0"></progress>
         <div id="phaseLabel" class="small">Focus phase • Ends at --:--</div>
       </div>
 
+      <!-- Session lengths -->
       <div class="kv small" style="margin-top:8px">
         <div>Focus <input id="focusLen" type="number" min="1" value="25" /></div>
         <div>Break <input id="breakLen" type="number" min="1" value="5" /></div>
@@ -62,7 +59,7 @@
       </div>
     </section>
 
-    <!-- WORKSHOP (for future UI lists) -->
+    <!-- WORKSHOP (placeholder for future UI) -->
     <section id="shopCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Workshop</h3>
       <div class="small">Spend currencies during breaks.</div>
@@ -84,26 +81,21 @@
     <!-- SETTINGS -->
     <section id="settingsCard" class="card" style="display:none">
       <h3 style="margin:0 0 8px 0">Settings</h3>
-
       <div class="kv small">
         <div>
           <label style="display:flex;align-items:center;gap:8px">
-            <input id="setChime" type="checkbox" checked />
-            Focus‑end chime
+            <input id="setChime" type="checkbox" checked /> Focus‑end chime
           </label>
         </div>
         <div>
           <label style="display:flex;align-items:center;gap:8px">
-            <input id="setShopBreakOnly" type="checkbox" checked />
-            Upgrades only during Breaks
+            <input id="setShopBreakOnly" type="checkbox" checked /> Upgrades only during Breaks
           </label>
         </div>
       </div>
-
       <div class="controls" style="margin-top:10px">
         <button id="resetSave" class="btn-danger" type="button">Reset Progress</button>
       </div>
-
       <div class="small" style="margin-top:8px;color:#9aa0b7">
         Reset clears your local save instantly. (No confirmation.)
       </div>
@@ -117,6 +109,7 @@
     <button id="tabSettings" type="button">Settings</button>
   </div>
 
+  <!-- Scripts -->
   <script src="game_v10.js?v=10"></script>
   <script>
     if ('serviceWorker' in navigator) {
