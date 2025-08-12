@@ -1,9 +1,9 @@
-const CACHE = 'focus-forge-v8';
+const CACHE = 'focus-forge-v9';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
-  './game_v8.js?v=8',
+  './game_v9.js?v=9',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
@@ -13,9 +13,7 @@ self.addEventListener('install', e => {
   self.skipWaiting();
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE && caches.delete(k))))
-  );
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE && caches.delete(k)))));
   self.clients.claim();
 });
 self.addEventListener('fetch', e => {
