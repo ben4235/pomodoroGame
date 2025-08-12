@@ -1,24 +1,37 @@
-const CACHE = 'focus-forge-v10';
+// Focus Forge SW – v12 cache
+const CACHE = 'focus-forge-v12';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
-  './game_v10.js?v=11',
+  './game_v10.js?v=12',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+
+// install: cache fresh assets
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
   self.skipWaiting();
 });
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE && caches.delete(k)))));
+
+// activate: clear old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE ? caches.delete(k) : undefined)))
+    )
+  );
   self.clients.claim();
 });
-self.addEventListener('fetch', e => {
-  const url = new URL(e.request.url);
+
+// fetch: cache-first for same-origin files
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
   if (url.origin === location.origin) {
-    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+    event.respondWith(
+      caches.match(event.request).then((hit) => hit || fetch(event.request))
+    );
   }
 });
